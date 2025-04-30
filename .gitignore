@@ -1,0 +1,61 @@
+# =====================
+# C/C++ Git Ignore 설정
+# =====================
+
+# 예외
+!memo*.txt
+
+# tempCodeRunnerFile제거
+tempCodeRunnerFile.c
+tempCodeRunnerFile.exe
+
+*.ini
+
+# 임시 파일 무시
+test*.c
+temp*.c
+t*.c
+
+# 빌드 및 실행 파일 무시
+*.exe
+*.bat
+*.obj
+*.o
+*.out
+*.dll
+*.so
+*.a
+*.lib
+
+# 로그 파일 무시
+*.log
+
+# 디버그 관련 파일 무시
+*.pdb
+*.ilk
+
+# IDE 설정 파일 무시 (Visual Studio, Code::Blocks 등)
+*.user
+*.suo
+*.vcxproj.*
+*.ncb
+*.opensdf
+*.sdf
+*.cache
+*.cbp
+*.depend
+
+# 백업 파일 무시
+*~
+*.bak
+
+# 기타 임시 파일 무시
+*.tmp
+
+# =====================
+# 소스 파일은 명시적으로 포함
+# =====================
+!*.c
+!*.cpp
+!*.h
+!*.hpp
