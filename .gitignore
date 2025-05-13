@@ -2,7 +2,6 @@
 # C/C++ Git Ignore 설정
 # =====================
 
-<<<<<<< HEAD
 # 예외 
 !memo*.txt
 
@@ -17,8 +16,6 @@ test*.c
 temp*.c
 t*.c
 
-=======
->>>>>>> 562bc3509732c008d4cdd12bdaddc0837feacb6f
 # 빌드 및 실행 파일 무시
 *.exe
 *.bat
