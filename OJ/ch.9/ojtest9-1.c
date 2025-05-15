@@ -11,7 +11,7 @@ int main(){
     for(int i = 0; i < 10; i++){
         do{
             scanf("%d", &arr[i]);
-        } while (arr[i] < 1 || arr[i] > 50);
+        } while (arr[i] < 1 || arr[i] > 50); //do-while은 while이 참일때 탈출함!
     }
 
     swap(&arr[0], &arr[9]);
