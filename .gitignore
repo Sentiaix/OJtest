@@ -13,7 +13,7 @@ tempCodeRunnerFile.exe
 
 # 임시 파일 무시
 test*.c
-temp*.c
+temp*.c 
 t*.c
 
 # 빌드 및 실행 파일 무시
