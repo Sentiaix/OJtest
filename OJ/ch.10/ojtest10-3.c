@@ -22,13 +22,9 @@ int main(){
 // define function
 void rotate_str(char* str, int n){
     char transer[129];
-    int len_str = strlen(str); printf("%d\n", len_str);
+    int len_str = strlen(str);
 
     n %= len_str; // 과하게 돌아가는걸 방지함.
-
-    for(int i = 0; i < len_str; i++){
-        printf("i: %d, c: %c\n", i, str[i]);
-    }
 
     for(int i = 0; i < n; i++){
         
@@ -37,9 +33,13 @@ void rotate_str(char* str, int n){
             transer[j + 1] = str[j]; // 밀린 글자들을 저장
             transer[0] = str[len_str - 1]; // 맨 끝글자를 앞으로 가져옴
         }
-        for(int k = 0; k < len_str - 1; k++){
-            str[i] = transer[i + 1];
+
+        // printf("%s\n", transer); test pr
+
+        for(int k = 0; k < len_str; k++){
+            str[k] = transer[k];
         }
-        str[len_str] = '\0';
     }
+    
+    str[len_str] = '\0';
 }
