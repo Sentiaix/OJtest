@@ -64,3 +64,7 @@ Complex parse_complex(const char *str){
     c.imag = parse_number(str, &idx);  // 연산자부터 다시 읽음
     return c;
 }
+
+// 작동 원리: Complex prase_complex에서 한 문자열을 가져옴
+// 그 다음 prase_number로 str값을 변환해 double로 return받는다
+// str을 double로 받으면 문자열이 두 숫자로 쪼개져 받아짐
