@@ -32,27 +32,28 @@ void save_book(BOOK* lib, int* n); // 파일로 저장
 int YesOrNo(char* str); // 응답 판단 (Yes -> 1, No -> 0)
 
 int main(){
-    INPUT input = { 1, 0, '\0'};
+    INPUT input = { 1, 0, ""};
     int n = 0; // 동적메모리 할당 변수
-    int response = 0; // 응답 저장
-    char resp_str[10]; // 응답 저장
+    char response[20]; // 응답 저장
 
+    announce(); // 안내사항 출력
 
     // 동적 메모리 할당
     BOOK* lib;
     lib = (BOOK*)malloc( n * sizeof(BOOK));
 
-    announce(); // 안내사항 출력
-
-    while(input.type != 0){
+    while(1){
 
         printf("Choose an option from the menu: ");
-
         // 무한반복 대비 장치
         if (scanf("%d", &input.type) != 1) {
             printf("\nInvalid input. Please enter the number in menu.\n");
             while (getchar() != '\n'); // 입력 버퍼 지우기 (getchar()로 한글자씩 받아 지우는데, EOF만나면 그만 지우고 문자열 받기)
             continue;
+        }
+        // 0 입력시 종료
+        if(input.type == 0){
+            break;
         }
 
         // 1. 책 번호 검색
@@ -71,7 +72,7 @@ int main(){
         else if(input.type == AddNewBook){
             printf("Enter the number of books to add: ");
             scanf("%d", &input.integer); // 저장할 책 수 입력
-            printf("Enter the information of book like this (Book number, Author's name, Title): ");
+            printf("Enter the information of book like this (Book number, Author's name, Title)\n");
 
             lib = realloc(lib, n * sizeof(BOOK)); // 동적 메모리 재선언
 
@@ -92,7 +93,7 @@ int main(){
         else if(input.type == SaveAsFile){
             printf("All entered information has been saved. Are you sure you want to remove it from memory? (Y/N): ");
             while(1){
-            scanf("%s", resp_str);
+            scanf("%s", response);
             int resp = YesOrNo(response);
                 if(resp == Yes){
                     // 책 저장
@@ -138,35 +139,37 @@ int main(){
 // define function
 void announce(){
     printf("==============================\n");
-    printf("1. Search by book number\n");
-    printf("2. Search by author's name\n");
-    printf("3. Search by book title\n");
-    printf("4. Add a new book\n");
-    printf("5. Display the number of books in the library\n");
-    printf("6. Print menu\n");
-    printf("7. Move books to file (remove from memeory)\n");
+    printf("1. Search by book number        ");
+    printf("2. Search by author's name      ");
+    printf("3. Search by book title         ");
+    printf("4. Add a new book             \n");
+    printf("5. Display the number of books in the library");
+    printf("                   6. Print menu");
+    printf("                   7. Move books to file (remove from memeory)\n");
     printf("8. Remove the file that stores book data\n");
     printf("==============================\n");
-    printf("If you want to delete all saved books from storage, enter 99\n");
     printf("To exit, eneter 0\n");
     printf("==============================\n");
 }
 
 void search_info(BOOK* lib, INPUT input, int n){
+    int found = 0; // 매칭하는 정보를 찾지 못한 경우 0을 반환
+
     for(int i = 0; i < n; i++){
         // 책 번호 검색
         if(input.type == BookNum && lib[i].book_num == input.integer){
-            print_book(lib[i]);
+            print_book(lib[i]); found = 1;
         }
         // 저자 검색
         else if(input.type == AuthorName && strcmp(lib[i].author, input.str) == 0){
-            print_book(lib[i]);
+            print_book(lib[i]); found = 1;
         }
         // 제목 검색
         else if(input.type == Title && strcmp(lib[i].title, input.str) == 0){
-            print_book(lib[i]);
+            print_book(lib[i]); found = 1;
         }
     }
+    if (!found) printf("No matches found.\n");
 }
 
 void print_book(BOOK lib){
@@ -174,37 +177,38 @@ void print_book(BOOK lib){
 }
 
 void get_book(BOOK* lib){
+    printf("Book number: ");
     scanf("%d", &lib->book_num);
     getchar();
+    printf("Author: ");
     scanf("%[^\n]", lib->author);
     getchar();
+    printf("Title: ");
     scanf("[^\n]", lib->title);
 }
 
 void save_book(BOOK* lib, int* n){
-    FILE* fp;
+    FILE* fp = fopen("Books Data", "a");
     
-    fp = fopen("Books Data", "a");
     if(fp == NULL){
         printf("File open Error\n");
+        return;
     }
 
-    for(int i = 0; i < n; i++){
+    for(int i = 0; i < *n; i++){
         fprintf(fp, "%d %s %s\n", lib[i].book_num, lib[i].author, lib[i].title);
     }
+
+    fclose(fp);
     
     // 메모리에 있는 내용 다 초기화했으면 메모리 크기 0으로 반환
     *n = 0;
-
-    fclose(fp);
+    printf("Books saved and memory cleared\n");    
 }
 
 int YesOrNo(char* str){
-    if(str[0] == 'Y' || str[0] == 'y'){
-        return Yes;
-    } else if(str[0] == 'N' || str[0] == 'n'){
-        return No;
-    } else{ // Y도 N도 아닌 경우
-        return NoMatchs;
-    }
+    if(str[0] == 'Y' || str[0] == 'y') return Yes;
+    if(str[0] == 'N' || str[0] == 'n') return No;
+    // Y도 N도 아닌 경우
+    return NoMatchs;
 }
