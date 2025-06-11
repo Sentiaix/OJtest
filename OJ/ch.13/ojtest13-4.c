@@ -37,7 +37,8 @@ char* to_str(int* str_size, unsigned int* arr){
         else {
             unsigned int num = arr[i]; // 배열의 값을 임시로 저장. 원래 값 손상 방지 + 코딩 중 쓰기 쉽게
             while (num > 0) { // 계속 나누면 0.n이 돼서 자료형(int)에 의해 
-                temp[temp_idx++] = (num % 10) + '0';  // 현재 자릿수 숫자 저장
+                // 뒷자릿수부터 저장하는거임!: 12345 > 54321로 저장됨
+                temp[temp_idx++] = (num % 10) + '0';
                 num /= 10;  // 숫자 1자리씩 나누기
             }
         }
