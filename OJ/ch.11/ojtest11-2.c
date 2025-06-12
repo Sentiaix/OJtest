@@ -43,12 +43,12 @@ int main(){
     
     scanf("%d", &Polygon.kind);
 
-    if(Polygon.kind == 0){ // case 1: Triangle.
+    if(Polygon.kind == TRI){ // case 1: Triangle.
         // Polygon.poly.T.w 은 Polygon > union P > struct Triangle > double w에 접근하는 것이다.
         scanf("%lf %lf", &Polygon.poly.T.w, &Polygon.poly.T.h);
-    } else if(Polygon.kind == 1){ // case 2: Rectangle
+    } else if(Polygon.kind == REC){ // case 2: Rectangle
         scanf("%lf %lf", &Polygon.poly.R.x, &Polygon.poly.R.y);
-    } else if(Polygon.kind == 2){ // case 3: Circle
+    } else if(Polygon.kind == CIR){ // case 3: Circle
         scanf("%lf", &Polygon.poly.C.r);
     }
 
