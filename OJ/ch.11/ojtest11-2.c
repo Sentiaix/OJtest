@@ -41,6 +41,9 @@ double Calculator(struct Polygon P);
 int main(){
     struct Polygon Polygon;
     
+    // enum은 프로그램 실행 시 내부적으로 값을 선언함.
+    // 예: TRI는 프로그램 실행하자마자 TRI == 0 임이 정해지고, TRI던 0이던 둘 다 같은 int형 자료인 0의 값으로 인식함.
+    // 아래의 scanf에 0이 입력됐어도, TRI가 입력됐다고 할 수 있고, enum값은 시작 후 절대 변하지 않음.
     scanf("%d", &Polygon.kind);
 
     if(Polygon.kind == TRI){ // case 1: Triangle.

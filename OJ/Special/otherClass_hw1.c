@@ -9,7 +9,7 @@
 // 4. 저장된 파일 자동으로 메모리에 호출하기. << 아직 안 함
 
 // the enum value is {1, 2, 3, 4, 5, 6}
-enum menu {BookNum = 1, AuthorName, Title, AddNewBook, NumOfExistBook, PrintMenu, SaveAsFile, RemoveFile};
+enum menu {BookNum = 1, AuthorName, Title, AddNewBook, NumOfExistBook, PrintMenu, SaveAsFile, RemoveFile, LoadToMem};
 enum response {NoMatchs = -1, No, Yes}; // 참 또는 거짓을 가시적으로 보여줌
 
 typedef struct book{
@@ -30,6 +30,7 @@ void search_info(BOOK* lib, INPUT input, int n); // 조건 만족 idx 출력.
 void print_book(BOOK lib); // 정보 출력
 void get_book(BOOK* lib); // 정보 입력
 void save_book(BOOK* lib, int* n); // 파일로 저장
+void load_book(BOOK* lib, int* n); // 파일에서 책 정보를 가져옴
 int YesOrNo(char* str); // 응답 판단 (Yes -> 1, No -> 0)
 
 int main(){
@@ -132,6 +133,21 @@ int main(){
                 }
             }
         }
+        // 9. 파일에서 메모리로 가져오기
+        else if(input.type == LoadToMem){
+            while(1){
+                scanf("%s", response);
+                int resp = YesOrNo(response);
+                if(resp == Yes){
+                    // 메모리로 호출하는 함수
+                    break;
+                } else if(resp == No){
+                    break;
+                } else if(resp == NoMatchs){
+                    printf("Try again.\n");
+                }
+            }
+        }
         // 입력값이 메뉴에 없는 경우
         else{
             printf("Enter type error. Please try again.\n");
@@ -156,9 +172,10 @@ void announce(){
     printf("5. Display the number of books in the library");
     printf("                   6. Print menu");
     printf("                   7. Move books to file (remove from memeory)\n");
-    printf("8. Remove the file that stores book data\n");
+    printf("8. Remove the file that stores book data");
+    printf("                        9. Load books to memory\n");
     printf("==============================\n");
-    printf("To exit, eneter 0\n");
+    printf("To exit, enter 0\n");
     printf("==============================\n");
 }
 
@@ -208,7 +225,7 @@ void save_book(BOOK* lib, int* n){
     }
 
     for(int i = 0; i < *n; i++){
-        fprintf(fp, "%d %s %s\n", lib[i].book_num, lib[i].author, lib[i].title);
+        fprintf(fp, "%d \"%s\" \"%s\"\n", lib[i].book_num, lib[i].author, lib[i].title);
     }
 
     fclose(fp);
@@ -223,4 +240,19 @@ int YesOrNo(char* str){
     if(str[0] == 'N' || str[0] == 'n') return No;
     // Y도 N도 아닌 경우
     return NoMatchs;
+}
+
+void load_book(BOOK* lib, int* n){
+    FILE* fp = fopen("Books Data", "r"); // 파일을 읽기 모드로 호출
+    int i = 0;
+    lib = (BOOK*)malloc(sizeof(BOOK));
+    while(1){
+        fscanf(fp, "%d \"%[^\"]\" \"%[^\"]\"\n", &lib[i].book_num, lib[i].author, lib[i].title);
+        if(!(feof(fp))) break;
+        i++;
+    }
+
+    *n = i; // 책 수 옮기기
+
+    fclose(fp);
 }
