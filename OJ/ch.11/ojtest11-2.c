@@ -61,11 +61,11 @@ int main(){
 double Calculator(struct Polygon P){
     double result = 0.0f;
 
-    if(P.kind == 0){ // Triangle
+    if(P.kind == TRI){ // Triangle; TRI value is 0
         result = (0.5f) * (P.poly.T.w) * (P.poly.T.h);
-    } else if(P.kind == 1){ // Rectangle
+    } else if(P.kind == REC){ // Rectangle
         result = (P.poly.R.x) * (P.poly.R.y);
-    } else if(P.kind == 2){ // Circle
+    } else if(P.kind == CIR){ // Circle
         result = (P.poly.C.r) * (P.poly.C.r) * PI;
     }
 
