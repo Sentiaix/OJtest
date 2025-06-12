@@ -246,7 +246,7 @@ void load_book(BOOK* lib, int* n){
     FILE* fp = fopen("Books Data", "r"); // 파일을 읽기 모드로 호출
     int i = 0;
     lib = (BOOK*)malloc(sizeof(BOOK));
-    while(1){
+    while(1){ 
         fscanf(fp, "%d \"%[^\"]\" \"%[^\"]\"\n", &lib[i].book_num, lib[i].author, lib[i].title);
         if(!(feof(fp))) break;
         i++;
