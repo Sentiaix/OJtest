@@ -6,6 +6,7 @@
 // 1. 기본 틀은 같은데 info를 메모리가 아닌 storage에 저장할것.
 // 2. 파일에 저장한걸 읽고 불러들이기도 할 것 << 고민중
 // 3. 동적 메모리 할당
+// 4. 저장된 파일 자동으로 메모리에 호출하기. << 아직 안 함
 
 // the enum value is {1, 2, 3, 4, 5, 6}
 enum menu {BookNum = 1, AuthorName, Title, AddNewBook, NumOfExistBook, PrintMenu, SaveAsFile, RemoveFile};
@@ -72,16 +73,25 @@ int main(){
         else if(input.type == AddNewBook){
             printf("Enter the number of books to add: ");
             scanf("%d", &input.integer); // 저장할 책 수 입력
+
+            // 새롭게 추가할 책의 수만큼 메모리를 확장
+            // 현재 n개의 책이 있고, input.integer 개의 책을 추가할 것이므로,
+            // 총 (n + input.integer) * sizeof(BOOK) 만큼의 공간이 필요함.
+            BOOK* temp_lib = (BOOK*)realloc(lib, (n + input.integer) * sizeof(BOOK));
+
+            // realloc이 성공했다면, lib 포인터를 새로운 메모리 주소로 업데이트합니다.
+            lib = temp_lib;
+
             printf("Enter the information of book like this (Book number, Author's name, Title)\n");
 
-            lib = realloc(lib, n * sizeof(BOOK)); // 동적 메모리 재선언
-
-            for(int i = n - input.integer; i < n; i++){
+            // 새롭게 추가되는 책들에 대한 정보를 입력받음
+            for(int i = n; i < n + input.integer; i++){
                 get_book(&lib[i]);
             }
+            // 총 책의 개수를 업데이트
             n += input.integer;
         }
-        // 5. 존재하는 책의 수 출력
+        // 5. 메모리에 존재하는 책의 수 출력
         else if(input.type == NumOfExistBook){
             printf("The number of books is: %d\n", n);
         }
@@ -178,13 +188,15 @@ void print_book(BOOK lib){
 
 void get_book(BOOK* lib){
     printf("Book number: ");
-    scanf("%d", &lib->book_num);
-    getchar();
+    scanf("%d", &lib->book_num); // 귀찮아서 예외처리 안 함
+    while(getchar() != '\n');
+
     printf("Author: ");
     scanf("%[^\n]", lib->author);
-    getchar();
+    while(getchar() != '\n');
+
     printf("Title: ");
-    scanf("[^\n]", lib->title);
+    scanf("%[^\n]", lib->title);
 }
 
 void save_book(BOOK* lib, int* n){
