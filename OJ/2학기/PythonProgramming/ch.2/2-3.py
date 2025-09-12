@@ -1,0 +1,12 @@
+stadium = input('where is the stadium?')
+winner = input('Which team won?')
+vip = input('Who is the best player?')
+score = input('What is the score?')
+
+print("")
+print("===========================================")
+print(f"A baseball game ---{stadium} today----")
+print(f"{winner} battle")
+print(f"{vip} was very active.")
+print(f"In the end, {winner} beat by {score}")
+print("===========================================")
