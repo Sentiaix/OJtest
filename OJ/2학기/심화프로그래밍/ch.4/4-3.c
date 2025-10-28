@@ -34,14 +34,19 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-int main(){
-    int s = 0; // 입력받을 삼각형 넓이
-
+int main() {
+    int s;
     scanf("%d", &s);
 
-    for(int i = 0; i < s; i++){
-        for(int i = 0; i < 0; i++){
-            
+    int area = 2 * s; // 밑변 * 높이 = 2 * 넓이
+    
+          // base < 약수(밑면)
+    for (int base = 1; base * base <= area; base++) { // 제곱근까지만 반복; 제곱근까지만 해도 넓이 / 밑면 쌍으로 다 나오기 때문. 예) 25: 1 5 (5 + 1) 25, 30: 1 2 3 6 (5.4 + 1) 10 15 30
+        if (area % base == 0) { // 나누어떨어지면 약수 쌍
+            int height = area / base; // a로 나눠지면 당연히 a * b = s임
+            if (base <= height) { // 밑변이 높이보다 크지 않게 ( 약수쌍 중 밑변의 넓이가 더 큰건 이론적으로 말이 안 됨)
+                printf("%d x %d\n", base, height);
+            }
         }
     }
 
