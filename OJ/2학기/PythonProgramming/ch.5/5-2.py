@@ -27,10 +27,10 @@ hot coffee
 HOT COFFEE
 '''
 
-t="   hello   \t\n" 
-print(t.strip())
+t = "   hello   \t\n"
+print(t.strip()) # .strip < 앞뒤공백제거
 
 s = "iced coffee"
-news = s.replace("iced", "hot")
-print(news)
-print(news.upper())
+new = s.replace("iced", "hot") # .replace("s1", "s2") < s1을 s2로 대체
+print(new)
+print(new.upper()) # .upper < 영문자 대문자로 교체

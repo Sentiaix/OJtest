@@ -30,10 +30,12 @@ Enter a string: apple coffee melon
 coffee
 '''
 
-s = input("Enter a string: ").strip() # 혹시모를 앞뒤 공백 제거
 
-idx = s.find(' ') # 첫 번째 공백 찾기
-news = s[idx+1:].strip() # 첫 번째 공백 이후 문자열. 앞뒤 공백 제거(공백 2개 이상 고려)
+# 세 개 이상의 단어 받기
+s = input("Enter a string: ").strip() # ,strip()으로 공백 벗기고 받음
 
-idx = news.find(' ') # 두 번째 공백 찾기
-print(news[:idx])  # 두 번째 단어 출력
+idx = s.find(' ') # 첫 공백 발견
+news = s[idx + 1:].strip() # [a:b] 슬라이싱으로 idx뒤부터 적용
+
+idx = news.find(' ') # 2단어만 있는 문장속에 단어 찾기
+print(news[:idx]) # [a:b]이면 b-1까지만 적용됨

@@ -35,5 +35,3 @@ idx = news.find('o') # 첫 번째 o 위치
 print(news[idx+1:].find('o'))
 idx = news.find(' ') # 공백 위치
 print(news[idx+1:].find('o')) # 두번째 글자부터 검색
-
- 
