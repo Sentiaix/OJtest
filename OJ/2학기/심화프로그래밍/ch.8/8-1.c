@@ -23,12 +23,21 @@ void printA(int n);
 int main(){
     int n;
 
-    scanf("%c", n);
+    scanf("%d", &n);
+    printA(n);
 
     return 0;
 }
 
 // define function
 void printA(int n) {
+    if(n == 0){
+        return ;
+    }
+    for(int i = 0; i < n; i++) {
+        printf("A");
+    }
+    printf("\n");
 
+    return printA(n - 1);
 }
