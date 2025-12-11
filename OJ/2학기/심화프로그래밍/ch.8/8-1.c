@@ -40,4 +40,4 @@ void printA(int n) {
     printf("\n");
 
     return printA(n - 1);
-}
+ }
