@@ -84,10 +84,10 @@ def is_overlap(start1, end1, start2, end2):
         # 비교를 위해 뒷 비행기의 점유시작시간을 1 미룸.
     for i in range(end1 - start1 + 1):
         dur1.append(i + start1)
-        print("dur1",dur1)
+        # print("dur1",dur1)
     for i in range(end2 - start2 + 1):
         dur2.append(i + start2)
-        print("dur2:",dur2)
+        # print("dur2:",dur2)
     
 
     # --- 반환 --- #
@@ -120,21 +120,24 @@ def count_conflicts(flights):
     ischked = [] # 충돌 검증이 된 항목의 idx는 int로 저장
     isconplicted = 0 # 항공편의 시간 충돌 횟수를 저장함.
     for i in range(lenght):
+        # print(f"{flights[i][0]}, {isconplicted}")
         isconplicted = 0 # 충돌 횟수 초기화
 
         if i in ischked: # 검증이 끝난 비행기는 확인 할 필요 없음
             continue
-        for j in range(i + 1, lenght - i):
+        for j in range(i + 1, lenght):
             # 같은 비행기에 대한 두개 이상의 항공편이 존재하면 비교 시작
             if flights[i][0] ==  flights[j][0]:
                 
                 # a랑 b 항공편이 겹치면
-                if is_overlap(flights[i][0], flights[j][0]):
+                if is_overlap(flights[i][1], flights[i][2],
+                              flights[j][1], flights[j][2]):
                     ischked.append(j) # 비교한 대상의 idx 저장
                     isconplicted += 1
-    
+        
         if isconplicted > 0 : # 충돌 횟수가 있으면 tuple로 추가
-            result.append(tuple(flights[i][0], isconplicted))
+            result.append((flights[i][0], isconplicted))
+            
         
     return result
 
@@ -147,15 +150,19 @@ for i in range(n): # 비행기 이름, 시작, 끝 입력
     Airplane, start_time, end_time = input().split()
     start_time = int(start_time)
     end_time = int(end_time)
-    uncleared_flights.append(tuple(Airplane, start_time, end_time))
+    uncleared_flights.append((Airplane, start_time, end_time))
+    # print(uncleared_flights)
 
 cleared_flights = count_conflicts(uncleared_flights)
 
 
 # --- 출력 --- #
+print("=== Flight Conflicts ===")
 for i in range(len(cleared_flights)):
-    pass
-
+    if cleared_flights == []:
+        print("None")
+        break
+    print(f"{cleared_flights[i][0]} {cleared_flights[i][1]}")
 
 
 # print(is_overlap(1,3,3,5))
