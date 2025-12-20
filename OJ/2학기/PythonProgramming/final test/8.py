@@ -61,3 +61,45 @@ Owner: Bob, Balance: 5000
 Interest added: 500 won
 Owner: Bob, Balance: 5500
 '''
+
+class BankAccount:
+    def __init__(self, name, balance):
+        self.name = name
+        self.balance = balance
+    
+    def deposit(self, amount):
+        self.balance += amount
+        print(f"Deposited {amount} won")
+    
+    def withdraw(self, amount):
+        if self.balance < amount :
+            print("Insufficient funds")
+        else :
+            self.balance -= amount
+            print(f"Withdrew {amount} won")
+        
+    def print_info(self):
+        print(f"Owner: {self.name}, Balance: {self.balance}")
+
+
+class SavingsAccount(BankAccount):
+    def __init__(self, name, balance, interest_rate):
+        super().__init__(name, balance)
+        self.interest_rate = interest_rate
+    
+    def add_interest(self):
+        amount = self.balance * self.interest_rate
+        amount = int(amount)
+        self.balance += amount
+        print(f"Interest added: {amount} won")
+
+print("--- Testing Alice's Account ---")
+alice_acc = BankAccount("Alice", 1000)
+alice_acc.print_info()
+alice_acc.withdraw(2000)  
+
+print("\n--- Testing Bob's Savings Account ---")
+bob_savings = SavingsAccount("Bob", 5000, 0.1)
+bob_savings.print_info()
+bob_savings.add_interest() 
+bob_savings.print_info()
