@@ -63,67 +63,61 @@ A2 11.00 h
 
 # 특정 기계의 수행능력(capacity)을 반환하는 함수
 def get_capacity(machines, machine_name):
-    if mac[machine_name] is not None:
-        return mac[machine_name]
+    if machines[machine_name] is not None:
+        return machines[machine_name]
     else :
         return None
     
 # 전체적으로 기계에 할당된 업무를 시간으로 출력하는 함수
 def calculate_loads(machines, jobs):
-    calced_orders = {}
+    calced_orders_dict = {}
+
     # 작업량 / 수용능력 정리해서 새 dict에 입력
-    for key in machines_list:
-        calced_orders[key] = orders[key] / mac[key]
-        print(calced_orders)
+    for name, capacity in machines.items():
+        # get() 함수
+        # dict_name.get(key, default value):
+        # dict에 해당 key가 존재한다면 그 값을, 존재하지 않는다면 설정한 default값을 반환한다.
+        quantity = jobs.get(name, 0)
+        calced_orders_dict[name] = float(quantity) / capacity
     
     # 이렇게 하면 tuple로 return됨.
-    calced_orders = sorted(calced_orders.items()
-                           , key=lambda x: x[1])
+    sorted_loads = sorted(calced_orders_dict.items()
+                          , key=lambda x: x[1], reverse=True)
     
-    m = len(calced_orders)
-
-    print("=== Machine Loads ===")
-    for i in range(m):
-        cMac_name = calced_orders[i][0]
-        cMac_cap = calced_orders[i][1]
-        print(f"{cMac_name} {cMac_cap:.2f} h")
-
-    print("=== Overloaded Machines (over 8.0 h) ===")
-    for m in calced_orders[0]:
-        if calced_orders[m][1] > 8.00:
-            print(f"{m} {calced_orders:.2f} h")
-
+    return sorted_loads
 
 # --- 1번째 입력. 기계 정보 --- #
 n = int(input()) # 기계 수 입력
-mac = {} # 기계이름: 시간당 수용능력 저장
+mac_info = {} # 기계이름: 시간당 수용능력 저장
 
-for i in range(n): # 기계의 수용능력 입력
+for _ in range(n): # 기계의 수용능력 입력
     mac_name, machine = input().split()
-    machine = int(machine)
-    mac[mac_name] = machine
-
-m = int(input()) # 작업 Case 수 입력
+    mac_info[mac_name] = int(machine)
 
 
 # --- 2번째 입력. 작업 할당 --- #
-orders = {} # ('기계번호': 작업량)
+m = int(input()) # 작업 Case 수 입력
+job_info = {} # (기계 이름: 총 작업량)
 
 for i in range(m):
     # order_id, product_name, mac_name, quantitiy(int)
-    o, p, a, quan = input().split()
+    _, _, m_name, quan = input().split()
     quan = int(quan)
 
     # 주문번호, 제품번호를 무시하고 (기계번호: 작업량)만 dict로 저장
-    if a in orders.keys(): # key is immutable, but value is mutable
-        orders[a] += quan
+    if m_name in job_info: # key is immutable, but value is mutable
+        job_info[m_name] += quan
     else :
-        orders[a] = quan
+        job_info[m_name] = quan
 
-machines_list = []
-jobs_list = []
-for k in orders.keys():
-    machines_list.append(k)
-    jobs_list.append(orders[k])
 
-calculate_loads(machines_list, jobs_list)
+s_loads = calculate_loads(mac_info, job_info)
+
+print("=== Machine Loads ===")
+for name, load in s_loads:
+    print(f"{name} {load:.2f} h")
+
+print("=== Overloaded Machines (over 8.0 h) ===")
+for name, load in s_loads:
+    if load > 8.00:
+        print(f"{name} {load:.2f} h")
