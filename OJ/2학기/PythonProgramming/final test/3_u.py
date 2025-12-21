@@ -70,8 +70,28 @@ def get_capacity(machines, machine_name):
     
 # 전체적으로 기계에 할당된 업무를 시간으로 출력하는 함수
 def calculate_loads(machines, jobs):
+    calced_orders = {}
+    # 작업량 / 수용능력 정리해서 새 dict에 입력
+    for key in machines_list:
+        calced_orders[key] = orders[key] / mac[key]
+        print(calced_orders)
     
-    pass
+    # 이렇게 하면 tuple로 return됨.
+    calced_orders = sorted(calced_orders.items()
+                           , key=lambda x: x[1])
+    
+    m = len(calced_orders)
+
+    print("=== Machine Loads ===")
+    for i in range(m):
+        cMac_name = calced_orders[i][0]
+        cMac_cap = calced_orders[i][1]
+        print(f"{cMac_name} {cMac_cap:.2f} h")
+
+    print("=== Overloaded Machines (over 8.0 h) ===")
+    for m in calced_orders[0]:
+        if calced_orders[m][1] > 8.00:
+            print(f"{m} {calced_orders:.2f} h")
 
 
 # --- 1번째 입력. 기계 정보 --- #
@@ -99,10 +119,11 @@ for i in range(m):
         orders[a] += quan
     else :
         orders[a] = quan
-        
-print(orders)
-    
-    
 
-#print(mac)
-# 함수 이해가 안돼서 아직 덜 함
+machines_list = []
+jobs_list = []
+for k in orders.keys():
+    machines_list.append(k)
+    jobs_list.append(orders[k])
+
+calculate_loads(machines_list, jobs_list)
